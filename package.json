@@ -1,0 +1,14 @@
+{
+	"name": "nodejs-fastload",
+	"version": "0.0.1",
+	"author": "Keiran <tkeiran@gmail.com>",
+	"description": "A module for express web application framework for node.",
+	"dependencies": {
+		"gm": "*",
+		"request": "*"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=0.8"
+	}
+}
