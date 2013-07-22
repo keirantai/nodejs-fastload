@@ -1,14 +1,29 @@
 {
-	"name": "nodejs-fastload",
-	"version": "0.0.1",
-	"author": "Keiran <tkeiran@gmail.com>",
-	"description": "A module for express web application framework for node.",
-	"dependencies": {
-		"gm": "*",
-		"request": "*"
-	},
-	"license": "MIT",
-	"engines": {
-		"node": ">=0.8"
-	}
+  "name": "nodejs-fastload",
+  "version": "0.0.1",
+  "author": "Keiran <tkeiran@gmail.com>",
+  "description": "A module for express web application framework for node.",
+  "dependencies": {
+    "gm": "*",
+    "request": "*"
+  },
+  "license": "BSD",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keirantai/nodejs-fastload.git"
+  },
+  "keywords": [
+    "express",
+    "fastload",
+    "nodejs",
+    "image",
+    "resize"
+  ]
 }
