@@ -1,6 +1,6 @@
 {
   "name": "nodejs-fastload",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Keiran <tkeiran@gmail.com>",
   "description": "A module for express web application framework for node.",
   "dependencies": {

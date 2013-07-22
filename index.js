@@ -51,15 +51,14 @@ var ruleToObj = function(req) {
 }
 
 exports.filter = function(req, res) {
-	var re = new RegExp("/^"+pUrl.replace('\\','\\\\')+"\/([\w-,]+)\/(.+)");
+	var re = new RegExp("^"+ pUrl.replace('/','\\/') +"\\/([\\w-,]+)\\/(.+)");
 	var m = req.url.match(re);
-	if ('object'===typeof m && m.length == 2) {
-		var rule=m[0], imgUrl = m[1];
+	if ('object'===typeof m && m.length >= 3) {
+		var rule=m[1], imgUrl = m[2];
 	} else {
 		res.send(500, "Invalid URL or request!");
 		return;
 	}
-	var rule=req.params[0], imgUrl=req.params[1];
 	var tmpname = (new Date()).getTime()+Math.floor(Math.random()*1000)+'-img';
 	download(imgUrl, '/tmp/'+tmpname, function(err, filename) {
 		if (err) {
