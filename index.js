@@ -54,8 +54,9 @@ exports.filter = function(req, res, next) {
 	var re = new RegExp("^"+ pUrl.replace('/','\\/') +"\\/([\\w-,]+)\\/(.+)");
 	var m = req.url.match(re);
 
-	// check if the url match our prefix-configuration...
-	if (m !== null) {
+	// go to the next step, if the request doesn't meet the chosen url-prefix
+	if (!m) next();
+	else {
 		if ('object'===typeof m && m.length >= 3) {
 			var rule=m[1], imgUrl = m[2];
 		} else {
@@ -102,9 +103,6 @@ exports.filter = function(req, res, next) {
 				});
 			});
 		});
-	// otherwise go to the next step
-	} else {
-		next();
 	}
 };
 
