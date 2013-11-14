@@ -50,56 +50,62 @@ var ruleToObj = function(req) {
 	return obj;
 }
 
-exports.filter = function(req, res) {
+exports.filter = function(req, res, next) {
 	var re = new RegExp("^"+ pUrl.replace('/','\\/') +"\\/([\\w-,]+)\\/(.+)");
 	var m = req.url.match(re);
-	if ('object'===typeof m && m.length >= 3) {
-		var rule=m[1], imgUrl = m[2];
-	} else {
-		res.send(500, "Invalid URL or request!");
-		return;
-	}
-	var tmpname = (new Date()).getTime()+Math.floor(Math.random()*1000)+'-img';
-	download(imgUrl, '/tmp/'+tmpname, function(err, filename) {
-		if (err) {
-			res.send("Error to download: "+imgUrl);
-			return;
-		}
-		var fgm = gm(filename);
-		var rules = ruleToObj(rule);
-		for (var i in rules) {
-			switch (i) {
-				case 'resize':
-					fgm.resize.apply(fgm, rules[i]);
-					break;
-				case 'rotate':
-					fgm.rotate('rgb(255,255,255,0)', rules[i]);
-					break;
-				case 'flop':
-					fgm.flop();
-				case 'quality':
-					fgm.quality(rules[i]);
-					break;
-			}
-		}
-		// do the cropping at last
-		if (rules['crop']) {
-			fgm.crop.apply(fgm, rules['crop']);
-		}
 
-		fgm.stream(function(err, stdout, stderr) {
+	// check if the url match our prefix-configuration...
+	if (m !== null) {
+		if ('object'===typeof m && m.length >= 3) {
+			var rule=m[1], imgUrl = m[2];
+		} else {
+			next()
+		}
+		var tmpname = (new Date()).getTime()+Math.floor(Math.random()*1000)+'-img';
+		download(imgUrl, '/tmp/'+tmpname, function(err, filename) {
 			if (err) {
-				res.send("Error to load: "+imgUrl);
-				fs.unlink('/tmp/'+tmpname);
+				res.send("Error to download: "+imgUrl);
 				return;
 			}
-			stdout.pipe(res);
-			// remove when output to user
-			stdout.on('end', function() {
-				fs.unlink('/tmp/'+tmpname);
+			var fgm = gm(filename);
+			var rules = ruleToObj(rule);
+			for (var i in rules) {
+				switch (i) {
+					case 'resize':
+						fgm.resize.apply(fgm, rules[i]);
+						break;
+					case 'rotate':
+						fgm.rotate('rgb(255,255,255,0)', rules[i]);
+						break;
+					case 'flop':
+						fgm.flop();
+					case 'quality':
+						fgm.quality(rules[i]);
+						break;
+				}
+			}
+			// do the cropping at last
+			if (rules['crop']) {
+				fgm.crop.apply(fgm, rules['crop']);
+			}
+
+			fgm.stream(function(err, stdout, stderr) {
+				if (err) {
+					res.send("Error to load: "+imgUrl);
+					fs.unlink('/tmp/'+tmpname);
+					return;
+				}
+				stdout.pipe(res);
+				// remove when output to user
+				stdout.on('end', function() {
+					fs.unlink('/tmp/'+tmpname);
+				});
 			});
 		});
-	});
+	// otherwise go to the next step
+	} else {
+		next();
+	}
 };
 
 exports.loader = function(prefix) {
