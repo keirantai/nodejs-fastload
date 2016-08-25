@@ -84,6 +84,6 @@ Example:
 
 ### Multiple Options
 
-In additions to the single setting of the image manipulation, **FastLoad** also supports implement multiple options by using comma separator. Such as you may want to resize an image to 100px width and 100px height, meanwile, to rotate the image 90 degrees.
+In additions to the single setting of the image manipulation, **FastLoad** also supports implement multiple options by using comma separator. For example you may want to resize an image to 100px width and 100px height, meanwhile, to rotate the image 90 degrees.
 
 	http://yourdomainname.com/l/100x100,r90/http://www.google.com/images/srpr/logo4w.png
